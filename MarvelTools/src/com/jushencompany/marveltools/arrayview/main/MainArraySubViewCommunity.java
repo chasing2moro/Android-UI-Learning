@@ -50,14 +50,14 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 	public void onRegistEvent() {
 		// TODO Auto-generated method stub
 		super.onRegistEvent();
-		registEvent(EventName.DownloadProfileImageFinish, "onDownloadProfileImageFinish");
+		registEvent(EventName.AsyncImageLoaderPlus_DownloadProfileImageRep, "onAsyncImageLoaderPlus_DownloadProfileImageFinish");
 	}
 
 	@Override
 	public void onUnRegistEvent() {
 		// TODO Auto-generated method stub
 		super.onUnRegistEvent();
-		unRegistEvent(EventName.DownloadProfileImageFinish, "onDownloadProfileImageFinish");
+		unRegistEvent(EventName.AsyncImageLoaderPlus_DownloadProfileImageRep, "onAsyncImageLoaderPlus_DownloadProfileImageFinish");
 	}
 	
 	@Override
@@ -67,8 +67,8 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 		requestTimeLine();
 	}
 	
-	public Object onDownloadProfileImageFinish(EventArg vEventArg){
-		//LoggerUtils.i("onDownloadProfileImageFinish");
+	public Object onAsyncImageLoaderPlus_DownloadProfileImageFinish(EventArg vEventArg){
+		//LoggerUtils.i("onAsyncImageLoaderPlus_DownloadProfileImageFinish");
 		_TimeLineAdapter.notifyDataSetChanged();
 		return null;
 	}
@@ -105,7 +105,15 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 	
 	void requestTimeLine() {
 		LoggerUtils.i("requestTimeLine");
+		
+		boolean isLogin = false;
+        // 第一次启动本应用，AccessToken 不可用
+        if (AccessTokenKeeper.readAccessToken(getActivity()).isSessionValid()) {
+        	isLogin = true;
+        }
 		if (false) {
+			
+			/*
 			String[] images = new String[] {
 					"http://img.my.csdn.net/uploads/201407/26/1406383299_1976.jpg",
 					"http://img.my.csdn.net/uploads/201407/26/1406383291_6518.jpg",
@@ -203,6 +211,14 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 			_TimeLineAdapter = new TimeLineAdapter(getActivity(),
 					TimeLineUserInfoManager.singleton().getDataList());
 			_ListViewFriendsTimeline.setAdapter(_TimeLineAdapter);
+			*/
+			 // 获取当前已保存过的 Token
+			 Oauth2AccessToken AccessToken =
+			 AccessTokenKeeper.readAccessToken(getActivity());
+			 // 获取用户信息接口
+			 _TimeLineAPI = new TimeLineAPI(getActivity(), Constants.APP_KEY,
+			 AccessToken);
+			 _TimeLineAPI.requestPublicTimeLine(MainArraySubViewCommunity.this);
 		}else{
 
 		 // 获取当前已保存过的 Token
@@ -272,6 +288,6 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 	@Override
 	public void onWeiboException(WeiboException arg0) {
 		// TODO Auto-generated method stub
-		LoggerUtils.i("TimeLineAPI Request error:" + arg0);
+		LoggerUtils.e("TimeLineAPI Request error:" + arg0);
 	}
 }

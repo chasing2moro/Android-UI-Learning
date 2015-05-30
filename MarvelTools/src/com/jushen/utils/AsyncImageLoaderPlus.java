@@ -3,17 +3,20 @@ package com.jushen.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jushen.framework.event.EventArg;
 import com.jushen.framework.event.EventName;
 import com.jushen.framework.event.Facade;
 import com.jushen.utils.log.LoggerUtils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 
 
 public class AsyncImageLoaderPlus extends AsyncImageLoader{
 	List<String> _DownloadingUrls;
-	
+	public String m_EventNameReqLoadImage;
+	public String m_EventNameRepLoadImage;
 	public AsyncImageLoaderPlus(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -50,7 +53,7 @@ public class AsyncImageLoaderPlus extends AsyncImageLoader{
 			_DownloadingUrls.add(vUrl);//加回队列，继续下载
 		}
 		LoggerUtils.i("download finish :" + vUrl + " haveResult:" + (vResult != null));
-		sendEvent(EventName.DownloadProfileImageFinish, null);
+		sendEvent(EventName.AsyncImageLoaderPlus_DownloadProfileImageRep, null);
 		downloadNext();
 	}
 
@@ -61,5 +64,28 @@ public class AsyncImageLoaderPlus extends AsyncImageLoader{
 			LoggerUtils.i("download start:" + tmp);
 			super.onDownloadWithUrl(tmp);
 		}
+	}
+	
+	@Override
+	public void onRegistEvent() {
+		// TODO Auto-generated method stub
+		super.onRegistEvent();
+		registEvent(EventName.AsyncImageLoaderPlus_DownloadProfileImageReq, "onHandleLoadImage");
+	}
+	
+	@Override
+	public void onUnRegistEvent() {
+		// TODO Auto-generated method stub
+		super.onUnRegistEvent();
+		registEvent(EventName.AsyncImageLoaderPlus_DownloadProfileImageReq, "onHandleLoadImage");
+	}
+	
+	public Object onHandleLoadImage(EventArg vEventArg){
+		String imageUrl = vEventArg.getString("imageUrl");
+		if(TextUtils.isEmpty(imageUrl)){
+			LoggerUtils.e("imageUrl is null");
+			return null;
+		}
+		return loadImage(imageUrl);
 	}
 }

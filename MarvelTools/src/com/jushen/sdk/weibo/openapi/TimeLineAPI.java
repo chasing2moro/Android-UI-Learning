@@ -3,6 +3,7 @@ package com.jushen.sdk.weibo.openapi;
 import android.content.Context;
 import android.util.SparseArray;
 
+import com.jushen.utils.log.LoggerUtils;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.net.RequestListener;
 import com.sina.weibo.sdk.net.WeiboParameters;
@@ -35,5 +36,15 @@ public class TimeLineAPI extends AbsOpenAPI {
 	public void requestFriendsTimeLine(RequestListener listener) {
 		WeiboParameters params = new WeiboParameters(mAppKey);
 		requestAsync(sAPIList.get(READ_FRIENDS), params, HTTPMETHOD_GET, listener);
+	}
+	
+	/**
+	 * @param listener
+	 *            异步请求回调接口
+	 */
+	public void requestPublicTimeLine(RequestListener listener) {
+		WeiboParameters params = new WeiboParameters(mAppKey);
+		LoggerUtils.i("req appKey:" + mAppKey);
+		requestAsync(sAPIList.get(READ_PUBLIC), params, HTTPMETHOD_GET, listener);
 	}
 }

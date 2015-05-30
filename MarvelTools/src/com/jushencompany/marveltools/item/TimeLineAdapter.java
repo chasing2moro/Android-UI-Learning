@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import com.jushen.framework.event.EventArg;
+import com.jushen.framework.event.EventName;
+import com.jushen.framework.event.Facade;
 import com.jushen.utils.AsyncImageLoaderPlus;
 import com.jushen.utils.log.LoggerUtils;
 import com.jushencompany.marveltools.R;
@@ -21,7 +24,6 @@ import android.widget.TextView;
 public class TimeLineAdapter extends BaseAdapter{
 	private List<TimeLineUserInfo> mData;
     private LayoutInflater mInflater;
-    private AsyncImageLoaderPlus _AsyncImageLoader;
      
 //    public TimeLineAdapter(Context context){
 //        this(context, null);
@@ -30,7 +32,6 @@ public class TimeLineAdapter extends BaseAdapter{
     public TimeLineAdapter(Context context, List<TimeLineUserInfo> vData){
         this.mInflater = LayoutInflater.from(context);
         mData = vData;
-        _AsyncImageLoader = new AsyncImageLoaderPlus(context);
     }
     @Override
     public int getCount() {
@@ -60,7 +61,7 @@ public class TimeLineAdapter extends BaseAdapter{
             convertView = mInflater.inflate(R.layout.item_friends_timeline, null);
             holder.mImageViewPortrait = (ImageView)convertView.findViewById(R.id.imageview__friends_timeline__portrait);
             holder.mTextViewText = (TextView)convertView.findViewById(R.id.textview__friends_timeline__text);
-           holder.mTextViewname = (TextView)convertView.findViewById(R.id.textView_friends_timeline__name);
+            holder.mTextViewname = (TextView)convertView.findViewById(R.id.textView_friends_timeline__name);
             convertView.setTag(holder);
         }else {
             holder = (TimeLineItem)convertView.getTag();
@@ -71,7 +72,10 @@ public class TimeLineAdapter extends BaseAdapter{
         TimeLineUserInfo aTimeLineUserInfo = mData.get(position);
         holder.mTextViewText.setText(aTimeLineUserInfo.text);
         holder.mTextViewname.setText(aTimeLineUserInfo.name);
-        Bitmap profileBitmap = _AsyncImageLoader.loadImage(aTimeLineUserInfo.profile_image_url);
+        
+        EventArg aEventArg = new EventArg();
+        aEventArg.putString("imageUrl", aTimeLineUserInfo.profile_image_url);
+        Bitmap profileBitmap = (Bitmap)Facade.singleton().sendEvent(EventName.AsyncImageLoaderPlus_DownloadProfileImageReq, aEventArg);
         if(profileBitmap == null){
         	//LoggerUtils.i(aTimeLineUserInfo.name + " ("+ position + ") image haven't load");
         	holder.mImageViewPortrait.setImageResource(R.drawable.default_profile);

@@ -1,11 +1,9 @@
 package com.jushen.framework.event;
 
-import com.jushen.utils.log.LoggerUtils;
-
 public class Controller implements EventRegister{
 
 	public Controller(){		
-		fireRegistEvent();
+
 	}
 	
 	public void fireRegistEvent() {
