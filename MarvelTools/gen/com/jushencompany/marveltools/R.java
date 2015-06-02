@@ -61,35 +61,40 @@ public final class R {
         public static final int ic_com_sina_weibo_sdk_login_with_text=0x7f020013;
         public static final int ic_com_sina_weibo_sdk_logo=0x7f020014;
         public static final int ic_launcher=0x7f020015;
-        public static final int tab_about_me_normal=0x7f020016;
-        public static final int tab_about_me_pressed=0x7f020017;
-        public static final int tab_bg2=0x7f020018;
-        public static final int tab_community_normal=0x7f020019;
-        public static final int tab_community_pressed=0x7f02001a;
-        public static final int tab_discovery_normal=0x7f02001b;
-        public static final int tab_discovery_pressed=0x7f02001c;
-        public static final int tab_marveltools_normal=0x7f02001d;
-        public static final int tab_marveltools_pressed=0x7f02001e;
-        public static final int title_bar=0x7f02001f;
+        public static final int icoin_add=0x7f020016;
+        public static final int icoin_logo=0x7f020017;
+        public static final int spacer_medium=0x7f020018;
+        public static final int tab_about_me_normal=0x7f020019;
+        public static final int tab_about_me_pressed=0x7f02001a;
+        public static final int tab_bg2=0x7f02001b;
+        public static final int tab_community_normal=0x7f02001c;
+        public static final int tab_community_pressed=0x7f02001d;
+        public static final int tab_discovery_normal=0x7f02001e;
+        public static final int tab_discovery_pressed=0x7f02001f;
+        public static final int tab_marveltools_normal=0x7f020020;
+        public static final int tab_marveltools_pressed=0x7f020021;
+        public static final int title_bar=0x7f020022;
     }
     public static final class id {
-        public static final int action_settings=0x7f090014;
-        public static final int action_showLog=0x7f090015;
+        public static final int action_settings=0x7f090016;
+        public static final int action_showLog=0x7f090017;
         public static final int button__about_me__login=0x7f090009;
         public static final int button__auth__login=0x7f090000;
         public static final int button_log_slide=0x7f090007;
         public static final int id_content=0x7f090002;
-        public static final int id_tab_bottom_about_me=0x7f090012;
-        public static final int id_tab_bottom_community=0x7f09000c;
-        public static final int id_tab_bottom_discovery=0x7f090010;
-        public static final int id_tab_bottom_marvel_tools=0x7f09000e;
-        public static final int imagebutton_tab_bottom_about_me=0x7f090013;
-        public static final int imagebutton_tab_bottom_community=0x7f09000d;
-        public static final int imagebutton_tab_bottom_discovery=0x7f090011;
-        public static final int imagebutton_tab_bottom_marvel_tools=0x7f09000f;
+        public static final int id_tab_bottom_about_me=0x7f090014;
+        public static final int id_tab_bottom_community=0x7f09000e;
+        public static final int id_tab_bottom_discovery=0x7f090012;
+        public static final int id_tab_bottom_marvel_tools=0x7f090010;
+        public static final int imageView1=0x7f09000b;
+        public static final int imageView2=0x7f09000c;
+        public static final int imagebutton_tab_bottom_about_me=0x7f090015;
+        public static final int imagebutton_tab_bottom_community=0x7f09000f;
+        public static final int imagebutton_tab_bottom_discovery=0x7f090013;
+        public static final int imagebutton_tab_bottom_marvel_tools=0x7f090011;
         public static final int imageview__friends_timeline__portrait=0x7f090003;
         public static final int listview__community__friends_timeline=0x7f09000a;
-        public static final int ly_main_tab_bottom=0x7f09000b;
+        public static final int ly_main_tab_bottom=0x7f09000d;
         public static final int ly_main_weixin=0x7f090008;
         public static final int textView_friends_timeline__name=0x7f090004;
         public static final int textView_log=0x7f090006;
@@ -127,6 +132,13 @@ public final class R {
         public static final int title_activity_sub=0x7f050006;
     }
     public static final class style {
+        /** 
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
+         */
+        public static final int AppBase_jushen=0x7f060004;
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
