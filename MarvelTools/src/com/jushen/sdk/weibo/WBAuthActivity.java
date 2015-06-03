@@ -17,19 +17,27 @@
 package com.jushen.sdk.weibo;
 
 import java.text.SimpleDateFormat;
+
+import android.R.anim;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
+import com.jushen.utils.log.LoggerUtils;
 import com.jushencompany.marveltools.R;
 /**
  * 该类主要演示如何进行授权、SSO登陆。
@@ -59,6 +67,15 @@ public class WBAuthActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+        
+        ActionBar actionBar = getActionBar();
+        if(actionBar != null){
+        	actionBar.setDisplayHomeAsUpEnabled(true);
+        }else {
+			LoggerUtils.e("actionBar = null");
+		}
+
+        //Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         
         // 获取 Token View，并让提示 View 的内容可滚动（小屏幕可能显示不全）
         mTokenText = (TextView) findViewById(R.id.textview__auth__hint);
@@ -199,5 +216,23 @@ public class WBAuthActivity extends Activity {
         }
         message += "\n status:Logined";
         mTokenText.setText(message);
+    }
+    
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+    	// TODO Auto-generated method stub
+    	LoggerUtils.i("featureId:" + featureId +
+    			" itemId:" + item.getItemId() +
+    			" R.id.home:" + R.id.home +
+    			" android.R.id.home:" + android.R.id.home);
+    	switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			break;
+
+		default:
+			break;
+		}
+    	return super.onMenuItemSelected(featureId, item);
     }
 }
