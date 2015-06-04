@@ -9,6 +9,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.jushen.framework.commondef.IntentAction;
+import com.jushen.framework.event.EventArg;
+import com.jushen.framework.event.EventName;
 import com.jushen.sdk.weibo.WBAuthActivity;
 import com.jushen.utils.log.LoggerUtils;
 import com.jushencompany.marveltools.MainActivity;
@@ -39,6 +41,8 @@ public class MainArraySubViewAboutMe extends MainArrayViewBase{
 			public void onClick(View v) {
 				Intent loginIntent = new Intent(getActivity(), WBAuthActivity.class);
 				startActivity(loginIntent);
+		         //设置切换动画，从右边进入，左边退出
+               sendEvent(EventName.CommonUtils_ActivitySlideIn, EventArg.Create().setUserInfo(getActivity()));
 			}
 			
 		});

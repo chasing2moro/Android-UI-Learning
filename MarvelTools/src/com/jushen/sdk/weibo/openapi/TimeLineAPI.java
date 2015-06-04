@@ -9,7 +9,7 @@ import com.sina.weibo.sdk.net.RequestListener;
 import com.sina.weibo.sdk.net.WeiboParameters;
 import com.sina.weibo.sdk.openapi.AbsOpenAPI;
 
-public class TimeLineAPI extends AbsOpenAPI {
+public class TimeLineAPI extends OpenAPIBase {
 
 	// https://api.weibo.com/2/statuses/friends_timeline.json
 

@@ -28,6 +28,9 @@ public abstract class ArrayViewBase extends com.jushen.widget.Fragment{
 	}
 	
 	boolean _visible = false;
+	public boolean getIsVisible() {
+		return _visible;
+	}
 	public void selected() {
 		_visible = true;
 		onSelected();

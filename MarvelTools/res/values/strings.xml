@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">MarvelTools</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -11,4 +10,9 @@
 	<string name="about_me">我</string>
 	<string name="login">登陆</string>
 	<string name="account">账户</string>
+	
+	<string name="tip_warning">Warning</string>
+	<string name="tip_cancel">Cancel</string>
+	<string name="tip_ok">OK</string>
+	<string name="tip_havenot_login_comfirm_login">账号没登录，你要登录吗？</string>
 </resources>

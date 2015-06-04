@@ -1,5 +1,9 @@
 package com.jushen.framework.event;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.os.Bundle;
 
 public class EventArg{
@@ -12,41 +16,54 @@ public class EventArg{
 		_Bundle.clear();
 	}
 	
+	public static EventArg Create() {
+		return new EventArg();
+	}
+	
 //setter
-    void putBoolean(String key, boolean value) {
+	public EventArg putBoolean(String key, boolean value) {
     	_Bundle.putBoolean(key, value);
+    	return this;
     }
 
-    void putByte(String key, byte value) {
+	public EventArg putByte(String key, byte value) {
         _Bundle.putByte(key, value);
+    	return this;
     }
 
-    void putChar(String key, char value) {
+	public EventArg putChar(String key, char value) {
         _Bundle.putChar(key, value);
+    	return this;
     }
 
-    void putShort(String key, short value) {
+	public EventArg putShort(String key, short value) {
     	_Bundle.putShort(key, value);
+    	return this;
     }
 
-    public void putInt(String key, int value) {
+	public EventArg putInt(String key, int value) {
     	_Bundle.putInt(key, value);
+    	return this;
     }
 
-    public void putLong(String key, long value) {
+	public EventArg putLong(String key, long value) {
     	_Bundle.putLong(key, value);
+    	return this;
     }
 
-    void putFloat(String key, float value) {
+	public EventArg putFloat(String key, float value) {
     	_Bundle.putFloat(key, value);
+    	return this;
     }
 
-    public void putDouble(String key, double value) {
+	public EventArg putDouble(String key, double value) {
     	_Bundle.putDouble(key, value);
+    	return this;
     }
 
-    public void putString(String key, String value) {
+	public EventArg putString(String key, String value) {
     	_Bundle.putString(key, value);
+    	return this;
     }
     
     //getter
@@ -100,6 +117,27 @@ public class EventArg{
     }
 
 
+    private Object _object;
+    public Object getUserInfo(){
+    	return _object;
+    }
+    public EventArg setUserInfo(Object vObject) {
+		_object = vObject;
+		return this;
+	}
+    
+    private Map<String, Object> _string2Object;
+    public Object getUserInfo(String vKey){
+    	return _string2Object.get(vKey);
+    }
+    public EventArg putUserInfo(String vKey, Object vObject) {
+		if(_string2Object == null){
+			_string2Object = new HashMap<String, Object>();
+		}
+		
+		_string2Object.put(vKey, vObject);
+		return this;
+	}
 }
 //http://blog.csdn.net/zuolongsnail/article/details/8703432
 // ��Android��ͨ��Intentʹ��Bundle���ݶ���

@@ -135,20 +135,24 @@ public class MainActivity extends Activity implements OnClickListener , Serializ
 	MainArrayViewTabBase _viewTabAboutMe;
 	private void initTabView() {
 		_viewTabCommunity = _mainArrayViewTabManager.getMainArrayViewTab(MainArrayViewType.community);
+		findViewById(R.id.id_tab_bottom_community).setOnClickListener(this);
 		_viewTabCommunity.setImageButton((ImageButton)findViewById(R.id.imagebutton_tab_bottom_community));
-		_viewTabCommunity.getImageButton().setOnClickListener(this);
+		//_viewTabCommunity.getImageButton().setOnClickListener(this);
 		
 		_viewTabMarvelToos = _mainArrayViewTabManager.getMainArrayViewTab(MainArrayViewType.marveltools);
+		findViewById(R.id.id_tab_bottom_marvel_tools).setOnClickListener(this);
 		_viewTabMarvelToos.setImageButton((ImageButton)findViewById(R.id.imagebutton_tab_bottom_marvel_tools));
-		_viewTabMarvelToos.getImageButton().setOnClickListener(this);
+		//_viewTabMarvelToos.getImageButton().setOnClickListener(this);
 		
 		_viewTabDiscovery = _mainArrayViewTabManager.getMainArrayViewTab(MainArrayViewType.discovery);
+		findViewById(R.id.id_tab_bottom_discovery).setOnClickListener(this);
 		_viewTabDiscovery.setImageButton((ImageButton)findViewById(R.id.imagebutton_tab_bottom_discovery));
-		_viewTabDiscovery.getImageButton().setOnClickListener(this);
+		//_viewTabDiscovery.getImageButton().setOnClickListener(this);
 		
 		_viewTabAboutMe = _mainArrayViewTabManager.getMainArrayViewTab(MainArrayViewType.about_me);
+		findViewById(R.id.id_tab_bottom_about_me).setOnClickListener(this);
 		_viewTabAboutMe.setImageButton((ImageButton)findViewById(R.id.imagebutton_tab_bottom_about_me));
-		_viewTabAboutMe.getImageButton().setOnClickListener(this);
+		//_viewTabAboutMe.getImageButton().setOnClickListener(this);
 	}
 
 	
@@ -235,21 +239,38 @@ public class MainActivity extends Activity implements OnClickListener , Serializ
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		case R.id.imagebutton_tab_bottom_community:
+		case R.id.id_tab_bottom_community:
 			setTabSelection(0);
 			break;
-		case R.id.imagebutton_tab_bottom_marvel_tools:
+		case R.id.id_tab_bottom_marvel_tools:
 			setTabSelection(1);
 			break;
-		case R.id.imagebutton_tab_bottom_discovery:
+		case R.id.id_tab_bottom_discovery:
 			setTabSelection(2);
 			break;
-		case R.id.imagebutton_tab_bottom_about_me:
+		case R.id.id_tab_bottom_about_me:
 			setTabSelection(3);
 			break;
 		default:
 			LoggerUtils.e("unhandle error:" + v.getId());
 			break;
 		}
+//		switch (v.getId()) {
+//		case R.id.imagebutton_tab_bottom_community:
+//			setTabSelection(0);
+//			break;
+//		case R.id.imagebutton_tab_bottom_marvel_tools:
+//			setTabSelection(1);
+//			break;
+//		case R.id.imagebutton_tab_bottom_discovery:
+//			setTabSelection(2);
+//			break;
+//		case R.id.imagebutton_tab_bottom_about_me:
+//			setTabSelection(3);
+//			break;
+//		default:
+//			LoggerUtils.e("unhandle error:" + v.getId());
+//			break;
+//		}
 	}
 }

@@ -28,4 +28,14 @@
         android:layout_height="wrap_content"
         android:textSize="12sp" />
 
+    <EditText
+        android:id="@+id/editText__auth__hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textMultiLine" >
+
+        <requestFocus />
+    </EditText>
+
 </LinearLayout>

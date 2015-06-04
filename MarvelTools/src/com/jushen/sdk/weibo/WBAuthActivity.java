@@ -29,6 +29,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,9 @@ import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
+import com.jushen.framework.event.EventArg;
+import com.jushen.framework.event.EventName;
+import com.jushen.framework.event.Facade;
 import com.jushen.utils.log.LoggerUtils;
 import com.jushencompany.marveltools.R;
 /**
@@ -110,6 +114,8 @@ public class WBAuthActivity extends Activity {
             }
         });
         
+       
+        
         // 用户登出
 //        findViewById(R.id.logout).setOnClickListener(new OnClickListener() {
 //            @Override
@@ -171,8 +177,10 @@ public class WBAuthActivity extends Activity {
                 
                 // 保存 Token 到 SharedPreferences
                 AccessTokenKeeper.writeAccessToken(WBAuthActivity.this, mAccessToken);
-                Toast.makeText(WBAuthActivity.this, 
-                        "auth success", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(WBAuthActivity.this, 
+//                        "auth success", Toast.LENGTH_SHORT).show();
+                Facade.singleton().sendEvent(EventName.CommonUtils_ToastShow, 
+                		EventArg.Create().setUserInfo(WBAuthActivity.this).putString("text", "auth success"));
             } else {
                 // 以下几种情况，您会收到 Code：
                 // 1. 当您未在平台上注册的应用程序的包名与签名时；
@@ -183,23 +191,30 @@ public class WBAuthActivity extends Activity {
                 if (!TextUtils.isEmpty(code)) {
                     message = message + "\nObtained the code: " + code;
                 }
-                Toast.makeText(WBAuthActivity.this, message, Toast.LENGTH_LONG).show();
+                Facade.singleton().sendEvent(EventName.CommonUtils_ToastShow, 
+                		EventArg.Create().setUserInfo(WBAuthActivity.this).putString("text", message));
+             //   Toast.makeText(WBAuthActivity.this, message, Toast.LENGTH_LONG).show();
             }
         }
 
         @Override
         public void onCancel() {
-            Toast.makeText(WBAuthActivity.this, 
-                    "auth canceled", Toast.LENGTH_LONG).show();
+            Facade.singleton().sendEvent(EventName.CommonUtils_ToastShow, 
+            		EventArg.Create().setUserInfo(WBAuthActivity.this).putString("text", "auth canceled"));
+//            Toast.makeText(WBAuthActivity.this, 
+//                    "auth canceled", Toast.LENGTH_LONG).show();
         }
 
         @Override
         public void onWeiboException(WeiboException e) {
-            Toast.makeText(WBAuthActivity.this, 
-                    "Auth exception : " + e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(WBAuthActivity.this, 
+//                    "Auth exception : " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Facade.singleton().sendEvent(EventName.CommonUtils_ToastShow, 
+            		EventArg.Create().setUserInfo(WBAuthActivity.this).putString("text", "Auth exception : " + e.getMessage()));
         }
     }
     
+    EditText _editText;
     /**
      * 显示当前 Token 信息。
      * 
@@ -216,6 +231,11 @@ public class WBAuthActivity extends Activity {
         }
         message += "\n status:Logined";
         mTokenText.setText(message);
+        
+        if(_editText == null)
+        	_editText = (EditText)findViewById(R.id.editText__auth__hint);
+        _editText.setText("APP_KEY:" + Constants.APP_KEY +
+        		" \n\n" + "token:" + mAccessToken.getToken());
     }
     
     @Override
@@ -228,6 +248,7 @@ public class WBAuthActivity extends Activity {
     	switch (item.getItemId()) {
 		case android.R.id.home:
 			finish();
+			Facade.singleton().sendEvent(EventName.CommonUtils_ActivitySlideOut, EventArg.Create().setUserInfo(this));
 			break;
 
 		default:

@@ -9,6 +9,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +24,7 @@ import com.jushen.framework.event.EventRegister;
 import com.jushen.framework.event.Facade;
 import com.jushen.sdk.weibo.AccessTokenKeeper;
 import com.jushen.sdk.weibo.Constants;
+import com.jushen.sdk.weibo.WBAuthActivity;
 import com.jushen.sdk.weibo.openapi.TimeLineAPI;
 import com.jushen.utils.log.LoggerUtils;
 import com.jushencompany.marveltools.R;
@@ -30,7 +35,7 @@ import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.net.RequestListener;
 
-public class MainArraySubViewCommunity extends MainArrayViewBase implements RequestListener{
+public class MainArraySubViewCommunity extends MainArrayViewBase implements RequestListener, DialogInterface.OnClickListener{
 	ListView _ListViewFriendsTimeline;
 	TimeLineAdapter _TimeLineAdapter;
 	@Override
@@ -64,7 +69,17 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		requestTimeLine();
+
+		if(getIsVisible())
+			requestTimeLine();
+	}
+	
+	@Override
+	protected void onSelected() {
+		// TODO Auto-generated method stub
+		super.onSelected();
+		if(getActivity() != null)
+			requestTimeLine();
 	}
 	
 	public Object onAsyncImageLoaderPlus_DownloadProfileImageFinish(EventArg vEventArg){
@@ -107,11 +122,13 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 		LoggerUtils.i("requestTimeLine");
 		
 		boolean isLogin = false;
+		 // 获取当前已保存过的 Token
+		 Oauth2AccessToken AccessToken = AccessTokenKeeper.readAccessToken(getActivity());
         // 第一次启动本应用，AccessToken 不可用
-        if (AccessTokenKeeper.readAccessToken(getActivity()).isSessionValid()) {
+        if (AccessToken != null && AccessToken.isSessionValid()) {
         	isLogin = true;
         }
-		if (false) {
+		if (!isLogin) {
 			
 			/*
 			String[] images = new String[] {
@@ -212,21 +229,29 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 					TimeLineUserInfoManager.singleton().getDataList());
 			_ListViewFriendsTimeline.setAdapter(_TimeLineAdapter);
 			*/
-			 // 获取当前已保存过的 Token
-			 Oauth2AccessToken AccessToken =
-			 AccessTokenKeeper.readAccessToken(getActivity());
-			 // 获取用户信息接口
-			 _TimeLineAPI = new TimeLineAPI(getActivity(), Constants.APP_KEY,
-			 AccessToken);
-			 _TimeLineAPI.requestPublicTimeLine(MainArraySubViewCommunity.this);
-		}else{
 
-		 // 获取当前已保存过的 Token
-		 Oauth2AccessToken AccessToken =
-		 AccessTokenKeeper.readAccessToken(getActivity());
+			 // 获取用户信息接口
+//			 _TimeLineAPI = new TimeLineAPI(getActivity(),
+//					 Constants.APP_KEY,
+//                     AccessToken);
+//			 _TimeLineAPI.requestPublicTimeLine(MainArraySubViewCommunity.this);
+			
+			Resources resource = getActivity().getResources();
+			sendEvent(
+					EventName.CommonUtils_AlertDialogShow,
+					EventArg.Create()
+							.putString("title",
+									resource.getString(R.string.tip_warning))
+							.putString(
+									"message",
+									resource.getString(R.string.tip_havenot_login_comfirm_login))
+							.setUserInfo(getActivity())
+							.putUserInfo("listener", this));
+		}else{
 		 // 获取用户信息接口
-		 _TimeLineAPI = new TimeLineAPI(getActivity(), Constants.APP_KEY,
-		 AccessToken);
+		 _TimeLineAPI = new TimeLineAPI(getActivity(), 
+				 Constants.APP_KEY,
+				 AccessToken);
 		 _TimeLineAPI.requestFriendsTimeLine(MainArraySubViewCommunity.this);
 		}
 	}
@@ -289,5 +314,24 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 	public void onWeiboException(WeiboException arg0) {
 		// TODO Auto-generated method stub
 		LoggerUtils.e("TimeLineAPI Request error:" + arg0);
+	}
+
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+		// TODO Auto-generated method stub
+		//-1 -2
+		switch (which) {
+		case -1:
+			Intent loginIntent = new Intent(getActivity(), WBAuthActivity.class);
+			startActivity(loginIntent);
+	         //设置切换动画，从右边进入，左边退出
+           sendEvent(EventName.CommonUtils_ActivitySlideIn, EventArg.Create().setUserInfo(getActivity()));
+			break;
+		case -2:
+			
+			break;
+		default:
+			break;
+		}
 	}
 }
