@@ -6,6 +6,11 @@ public class TimeLineUserInfo{
 	public String name;
 	
 	public String profile_image_url;
+	
+	public TimeLineUserInfo retweetUserInfo = null;
+	public boolean hasRetweet(){
+		return retweetUserInfo != null;
+	}
 //	@Override
 //	public void setObject(Object vObject) {
 //		// TODO Auto-generated method stub

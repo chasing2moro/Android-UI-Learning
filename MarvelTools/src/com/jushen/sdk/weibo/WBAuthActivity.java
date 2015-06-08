@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -247,8 +248,7 @@ public class WBAuthActivity extends Activity {
     			" android.R.id.home:" + android.R.id.home);
     	switch (item.getItemId()) {
 		case android.R.id.home:
-			finish();
-			Facade.singleton().sendEvent(EventName.CommonUtils_ActivitySlideOut, EventArg.Create().setUserInfo(this));
+			_popUpActivity();
 			break;
 
 		default:
@@ -256,4 +256,19 @@ public class WBAuthActivity extends Activity {
 		}
     	return super.onMenuItemSelected(featureId, item);
     }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {	
+    	if(keyCode==KeyEvent.KEYCODE_BACK && 
+    			event.getRepeatCount() == 0){// = 0 means long press
+    		_popUpActivity();
+    	}
+
+    	return true;
+    }
+    
+    private void _popUpActivity() {
+    	finish();
+		Facade.singleton().sendEvent(EventName.CommonUtils_ActivitySlideOut, EventArg.Create().setUserInfo(this));
+	}
 }

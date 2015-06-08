@@ -7,8 +7,9 @@ import android.widget.TextView;
 public class TimeLineItem {
 	public ImageView mImageViewPortrait;
 	public TextView mTextViewText;
-	public TextView mTextViewname;
+	public TextView mTextViewName;
 	
+	public TextView mTextViewRetweet;
 	//DownloadFileAsyncTask _DownloadFileAsyncTask;
 	public void setImageViewPortrait(String vStr) {
 		// DownloadFileAsyncTask aDownloadFileAsyncTask = new DownloadFileAsyncTask();

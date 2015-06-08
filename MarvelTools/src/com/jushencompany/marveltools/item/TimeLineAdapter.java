@@ -61,7 +61,8 @@ public class TimeLineAdapter extends BaseAdapter{
             convertView = mInflater.inflate(R.layout.item_friends_timeline, null);
             holder.mImageViewPortrait = (ImageView)convertView.findViewById(R.id.imageview__friends_timeline__portrait);
             holder.mTextViewText = (TextView)convertView.findViewById(R.id.textview__friends_timeline__text);
-            holder.mTextViewname = (TextView)convertView.findViewById(R.id.textView_friends_timeline__name);
+            holder.mTextViewName = (TextView)convertView.findViewById(R.id.textView_friends_timeline__name);
+            holder.mTextViewRetweet = (TextView)convertView.findViewById(R.id.textView__friends_timeline__retweet_text);
             convertView.setTag(holder);
         }else {
             holder = (TimeLineItem)convertView.getTag();
@@ -71,7 +72,13 @@ public class TimeLineAdapter extends BaseAdapter{
        // holder.mImageViewPortrait.setBackgroundResource((Integer)mData.get(position).get("img"));
         TimeLineUserInfo aTimeLineUserInfo = mData.get(position);
         holder.mTextViewText.setText(aTimeLineUserInfo.text);
-        holder.mTextViewname.setText(aTimeLineUserInfo.name);
+        holder.mTextViewName.setText(aTimeLineUserInfo.name);
+        if(aTimeLineUserInfo.hasRetweet()){
+        	holder.mTextViewRetweet.setVisibility(View.VISIBLE);
+        	holder.mTextViewRetweet.setText("@" + aTimeLineUserInfo.retweetUserInfo.name + ":" + aTimeLineUserInfo.retweetUserInfo.text);
+        }else {
+        	holder.mTextViewRetweet.setVisibility(View.GONE);
+		}
         
         EventArg aEventArg = new EventArg();
         aEventArg.putString("imageUrl", aTimeLineUserInfo.profile_image_url);

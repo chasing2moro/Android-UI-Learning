@@ -36,7 +36,7 @@ public class Controller implements EventRegister{
 	{	
 		Facade.singleton().unRegistEvent(vEventName, this, vMethodName);
 	}
-	protected void sendEvent(String vEventName, EventArg vEventArg) {
-		Facade.singleton().sendEvent(vEventName, vEventArg);
+	protected Object sendEvent(String vEventName, EventArg vEventArg) {
+	  return Facade.singleton().sendEvent(vEventName, vEventArg);
 	}
 }

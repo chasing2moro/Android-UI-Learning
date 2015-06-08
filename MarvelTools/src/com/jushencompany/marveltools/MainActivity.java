@@ -2,6 +2,7 @@ package com.jushencompany.marveltools;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -120,8 +121,20 @@ public class MainActivity extends Activity implements OnClickListener , Serializ
 			transaction.add(R.id.id_content, mainArrayView);
 		} else
 		{
+			LoggerUtils.i(
+			" isAdd:" + mainArrayView.isAdded()
+			+ " isDetached:" + mainArrayView.isDetached()
+			+ " isHidden:" + mainArrayView.isHidden()
+			+ " isRemoving:" + mainArrayView.isRemoving()
+			+ " isVisible:" + mainArrayView.isVisible()
+			);
+			if(!mainArrayView.isAdded()){
+				LoggerUtils.w("" + mainArrayView + " has been removed, try to reAdd");
+				transaction.add(R.id.id_content, mainArrayView);
+			}
 			transaction.show(mainArrayView);
 		}
+		
 		transaction.commit();
 		
 		mainArrayView.selected();
@@ -273,4 +286,38 @@ public class MainActivity extends Activity implements OnClickListener , Serializ
 //			break;
 //		}
 	}
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		LoggerUtils.i("Activity Resume");
+	}
+	
+	long preTime;  
+	public static final long TWO_SECOND = 2 * 1000; 
+    @Override  
+    public boolean onKeyDown(int keyCode, KeyEvent event) {  
+        // 截获后退键  
+        if (keyCode == KeyEvent.KEYCODE_BACK) {  
+            long currentTime = new Date().getTime();  
+  
+            // 如果时间间隔大于2秒, 不处理  
+            if ((currentTime - preTime) > TWO_SECOND) { 
+            	sendEvent(EventName.CommonUtils_ToastShow,
+            			EventArg.Create().setUserInfo(this).putString("text", getResources().getString(R.string.tip_press_back_again_to_quit)));
+
+                // 更新时间  
+                preTime = currentTime;  
+  
+                // 截获事件,不再处理  
+                return true;  
+            }else {
+                finish();  
+                System.exit(0); 
+			}
+        }  
+  
+        return super.onKeyDown(keyCode, event);  
+    }  
 }

@@ -3,6 +3,7 @@ package com.jushencompany.marveltools.arrayview;
 import com.jushen.utils.log.LoggerUtils;
 
 import android.R.bool;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ public abstract class ArrayViewBase extends com.jushen.widget.Fragment{
 		onSelected();
 	}
 	protected void onSelected() {
-		LoggerUtils.i("onSelected :" + this.toString());
+		LoggerUtils.i("onSelected :" + getClass().toString() + " Activity:" + getActivity());
 	}
 	
 	public void unSelected() {
@@ -44,7 +45,7 @@ public abstract class ArrayViewBase extends com.jushen.widget.Fragment{
 		onUnSelected();
 	}
 	protected void onUnSelected() {
-		LoggerUtils.i("onUnSelected :" + this.toString());
+		//LoggerUtils.i("onUnSelected :" + this.toString());
 	}
 	
 	@Override
@@ -65,6 +66,20 @@ public abstract class ArrayViewBase extends com.jushen.widget.Fragment{
 	};
 	protected void onPauseWhenVisible() {
 		//LoggerUtils.i("onPauseWhenVisible:" + this.toString());
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		// TODO Auto-generated method stub
+		super.onAttach(activity);
+		LoggerUtils.i("onAttach");
+	}
+	
+	@Override
+	public void onDetach() {
+		// TODO Auto-generated method stub
+		super.onDetach();
+		LoggerUtils.i("onDetach");
 	}
 	
 }

@@ -15,4 +15,6 @@
 	<string name="tip_cancel">Cancel</string>
 	<string name="tip_ok">OK</string>
 	<string name="tip_havenot_login_comfirm_login">账号没登录，你要登录吗？</string>
+	<string name="tip_press_back_again_to_quit">再按一次，退出</string>
+	
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -20,16 +21,21 @@
         android:id="@+id/textView_friends_timeline__name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textColor="@color/black" />
+        android:text="名字" />
 
  </LinearLayout>
-    <TextView
+
+    <TextView
         android:id="@+id/textview__friends_timeline__text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="12343214324123"
-        android:textColor="@color/black"
+        android:text="正文"
         android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textView__friends_timeline__retweet_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="转发内容" />
 
 </LinearLayout>
