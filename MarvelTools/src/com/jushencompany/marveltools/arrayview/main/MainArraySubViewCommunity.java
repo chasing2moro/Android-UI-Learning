@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -27,8 +28,10 @@ import com.jushen.sdk.weibo.Constants;
 import com.jushen.sdk.weibo.WBAuthActivity;
 import com.jushen.sdk.weibo.openapi.TimeLineAPI;
 import com.jushen.sdk.weibo.utils.JasonParserUtils;
+import com.jushen.utils.CommonUtils;
 import com.jushen.utils.log.LoggerUtils;
 import com.jushencompany.marveltools.R;
+import com.jushencompany.marveltools.activity.DetailFriendTimelineActivity;
 import com.jushencompany.marveltools.item.TimeLineAdapter;
 import com.jushencompany.marveltools.model.TimeLineUserInfo;
 import com.jushencompany.marveltools.model.TimeLineUserInfoManager;
@@ -37,8 +40,10 @@ import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.net.RequestListener;
 
 public class MainArraySubViewCommunity extends MainArrayViewBase implements RequestListener, DialogInterface.OnClickListener{
-	ListView _ListViewFriendsTimeline;
-	TimeLineAdapter _TimeLineAdapter;
+	ListView _listViewFriendsTimeline;
+	TimeLineAdapter _timeLineAdapter;
+	
+	boolean _requested = false;
 	@Override
 	protected MainArrayViewType obtainViewType() {
 		// TODO Auto-generated method stub
@@ -71,7 +76,7 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 		// TODO Auto-generated method stub
 		super.onResume();
 		LoggerUtils.i("Comuunity Fragment Resume");
-		if(getIsVisible())
+		if(getIsVisible() && !_requested)
 			requestTimeLine();
 	}
 	
@@ -79,13 +84,13 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 	protected void onSelected() {
 		// TODO Auto-generated method stub
 		super.onSelected();
-		if(getActivity() != null)
+		if(getActivity() != null && !_requested)
 			requestTimeLine();
 	}
 	
 	public Object onAsyncImageLoaderPlus_DownloadProfileImageFinish(EventArg vEventArg){
 		//LoggerUtils.i("onAsyncImageLoaderPlus_DownloadProfileImageFinish");
-		_TimeLineAdapter.notifyDataSetChanged();
+		_timeLineAdapter.notifyDataSetChanged();
 		return null;
 	}
 	
@@ -116,7 +121,25 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 //			
 //		});
 		
-		_ListViewFriendsTimeline = (ListView)vRootView.findViewById(R.id.listview__community__friends_timeline);
+		_listViewFriendsTimeline = (ListView)vRootView.findViewById(R.id.listview__community__friends_timeline);
+		_listViewFriendsTimeline.setClickable(true);
+		_listViewFriendsTimeline.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, 
+					View view,
+					int position, 
+					long id) {
+				// TODO Auto-generated method stub
+				LoggerUtils.i("list view clicked pos:" + position);
+				Intent aIntent = new Intent();
+				aIntent.setClass(getActivity(), DetailFriendTimelineActivity.class);
+				startActivity(aIntent);
+				sendEvent(EventName.CommonUtils_ActivitySlideIn, EventArg.Create().setUserInfo(getActivity()));
+			}
+			
+		});
+
 	}
 	
 	void requestTimeLine() {
@@ -178,33 +201,6 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 
 		TimeLineUserInfoManager.singleton().clear();
 		for (int i = 0; i < statusesJsonArray.length(); i++) {
-			
-//			TimeLineUserInfo aTimeLineUserInfo = new TimeLineUserInfo();
-//			JSONObject friendTimeLineJsonObject = null;
-//			String temp = null;
-//			try {
-//				friendTimeLineJsonObject = statusesJsonArray.getJSONObject(i);
-//				temp = friendTimeLineJsonObject.getString("text");
-//				aTimeLineUserInfo.text = temp;
-//				
-//				JSONObject userJSONObject = friendTimeLineJsonObject.getJSONObject("user");
-//				if(userJSONObject == null)
-//					LoggerUtils.e("user can not find");
-//				
-//				temp = userJSONObject.getString("profile_image_url");
-//				if(TextUtils.isEmpty(temp)){
-//					LoggerUtils.e("profile_image_url can not find");
-//					temp = "http://tp1.sinaimg.cn/1668679740/50/5718695216/1";
-//				}
-//				aTimeLineUserInfo.profile_image_url = temp;
-//				
-//				
-//				temp = userJSONObject.getString("name");
-//				aTimeLineUserInfo.name = temp;
-//			} catch (JSONException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 			JSONObject friendTimeLineJsonObject = null;
 			try {
 				friendTimeLineJsonObject = statusesJsonArray.getJSONObject(i);
@@ -214,12 +210,15 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 			}
 			TimeLineUserInfo aTimeLineUserInfo = (TimeLineUserInfo)sendEvent(EventName.JasonParserUtils_GetTimeLineUserInfoFromJasonObject, 
 					EventArg.Create().setUserInfo(friendTimeLineJsonObject));
-			TimeLineUserInfoManager.singleton().add(aTimeLineUserInfo);
+			if(aTimeLineUserInfo != null)
+				TimeLineUserInfoManager.singleton().add(aTimeLineUserInfo);
 		}
 
 	        
-		_TimeLineAdapter = new TimeLineAdapter(getActivity(), TimeLineUserInfoManager.singleton().getDataList());
-		_ListViewFriendsTimeline.setAdapter(_TimeLineAdapter);;
+		_timeLineAdapter = new TimeLineAdapter(getActivity(), TimeLineUserInfoManager.singleton().getDataList());
+		_listViewFriendsTimeline.setAdapter(_timeLineAdapter);
+		
+		_requested = true;
 	}
 
 	@Override

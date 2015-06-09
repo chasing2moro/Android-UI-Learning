@@ -89,7 +89,7 @@ public class EventHandler {
     	return findList;
     }
     
-    //֪ͨ���еĶ���ִ��ָ�����¼�   
+
     public Object fireEvent(String vEventName, EventArg vEventArg){ 
     	Object returnObject = null;
     	List<Event> findEventList = findEventList(vEventName);

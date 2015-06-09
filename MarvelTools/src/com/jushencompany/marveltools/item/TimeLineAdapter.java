@@ -12,8 +12,10 @@ import com.jushen.utils.log.LoggerUtils;
 import com.jushencompany.marveltools.R;
 import com.jushencompany.marveltools.model.TimeLineUserInfo;
 
+import android.R.bool;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,10 +61,15 @@ public class TimeLineAdapter extends BaseAdapter{
             holder=new TimeLineItem();  
              
             convertView = mInflater.inflate(R.layout.item_friends_timeline, null);
-            holder.mImageViewPortrait = (ImageView)convertView.findViewById(R.id.imageview__friends_timeline__portrait);
-            holder.mTextViewText = (TextView)convertView.findViewById(R.id.textview__friends_timeline__text);
-            holder.mTextViewName = (TextView)convertView.findViewById(R.id.textView_friends_timeline__name);
-            holder.mTextViewRetweet = (TextView)convertView.findViewById(R.id.textView__friends_timeline__retweet_text);
+            holder.m_ImageViewPortrait = (ImageView)convertView.findViewById(R.id.imageview__friends_timeline__portrait);
+            holder.m_TextViewText = (TextView)convertView.findViewById(R.id.textview__friends_timeline__text);
+            holder.m_TextViewName = (TextView)convertView.findViewById(R.id.textView_friends_timeline__name);
+            holder.m_ImageViewContent = (ImageView)convertView.findViewById(R.id.imageView__friends_timeline__textcontent);
+           
+            holder.m_RetweetRoot = convertView.findViewById(R.id.view__friends_timeline__retweet_root);
+            holder.m_TextViewRetweetText = (TextView)convertView.findViewById(R.id.textView__friends_timeline__retweet_text);
+            holder.m_TextViewRetweetText.setFocusable(false);
+            holder.m_ImageViewRetweetContent = (ImageView)convertView.findViewById(R.id.imageView__friends_timeline__retweet_textcontent);
             convertView.setTag(holder);
         }else {
             holder = (TimeLineItem)convertView.getTag();
@@ -71,31 +78,64 @@ public class TimeLineAdapter extends BaseAdapter{
          
        // holder.mImageViewPortrait.setBackgroundResource((Integer)mData.get(position).get("img"));
         TimeLineUserInfo aTimeLineUserInfo = mData.get(position);
-        holder.mTextViewText.setText(aTimeLineUserInfo.text);
-        holder.mTextViewName.setText(aTimeLineUserInfo.name);
-        if(aTimeLineUserInfo.hasRetweet()){
-        	holder.mTextViewRetweet.setVisibility(View.VISIBLE);
-        	holder.mTextViewRetweet.setText("@" + aTimeLineUserInfo.retweetUserInfo.name + ":" + aTimeLineUserInfo.retweetUserInfo.text);
-        }else {
-        	holder.mTextViewRetweet.setVisibility(View.GONE);
-		}
+        holder.m_TextViewName.setText(aTimeLineUserInfo.name);
+        holder.m_TextViewText.setText(aTimeLineUserInfo.text);
+    
+        if(_setVisiblity(aTimeLineUserInfo.hasPic(), holder.m_ImageViewContent)){
+        	_downloadImage(holder.m_ImageViewContent, 
+            		aTimeLineUserInfo.thumbnail_pic, 
+            		R.color.light_gray);
+        }
         
+
+        if(_setVisiblity(aTimeLineUserInfo.hasRetweet(),  holder.m_RetweetRoot)){
+        	holder.m_TextViewRetweetText.setText("@" + aTimeLineUserInfo.retweetUserInfo.name + ":" + aTimeLineUserInfo.retweetUserInfo.text);
+        	if(_setVisiblity(aTimeLineUserInfo.retweetUserInfo.hasPic(), holder.m_ImageViewRetweetContent)){
+        		_downloadImage(holder.m_ImageViewRetweetContent, 
+                		aTimeLineUserInfo.retweetUserInfo.thumbnail_pic, 
+                		R.color.light_gray);
+        	}
+        }
+        
+
+//        
+//        EventArg aEventArg = new EventArg();
+//        aEventArg.putString("imageUrl", aTimeLineUserInfo.profile_image_url);
+//        Bitmap profileBitmap = (Bitmap)Facade.singleton().sendEvent(EventName.AsyncImageLoaderPlus_DownloadProfileImageReq, aEventArg);
+//        if(profileBitmap == null){
+//        	holder.m_ImageViewPortrait.setImageResource(R.drawable.default_profile);
+//        }else {
+//        	holder.m_ImageViewPortrait.setImageBitmap(profileBitmap);
+//		}
+        
+        _downloadImage(holder.m_ImageViewPortrait, aTimeLineUserInfo.profile_image_url, R.drawable.default_profile);
+        return convertView;
+    }
+    
+    static void _downloadImage(ImageView vImageView, String vUrl, int vDefaultResource){
         EventArg aEventArg = new EventArg();
-        aEventArg.putString("imageUrl", aTimeLineUserInfo.profile_image_url);
+        aEventArg.putString("imageUrl", vUrl);
         Bitmap profileBitmap = (Bitmap)Facade.singleton().sendEvent(EventName.AsyncImageLoaderPlus_DownloadProfileImageReq, aEventArg);
         if(profileBitmap == null){
-        	//LoggerUtils.i(aTimeLineUserInfo.name + " ("+ position + ") image haven't load");
-        	holder.mImageViewPortrait.setImageResource(R.drawable.default_profile);
+        	vImageView.setImageResource(vDefaultResource);
         }else {
-        	//LoggerUtils.i(aTimeLineUserInfo.name + " ("+ position + ") image loaded");
-        	holder.mImageViewPortrait.setImageBitmap(profileBitmap);
+        	vImageView.setImageBitmap(profileBitmap);
 		}
-        return convertView;
+    }
+    
+    static boolean _setVisiblity(boolean vVisible, View vView){
+    	int picVisibility;
+        if(vVisible == true){
+        	picVisibility = View.VISIBLE;
+        }else {
+        	picVisibility = View.GONE;
+		}
+        vView.setVisibility(picVisibility);
+        return vVisible;
     }
      
     @Override
     public void notifyDataSetChanged() {
-    	LoggerUtils.i("------------------------");
 		super.notifyDataSetChanged();
 	} 
 }

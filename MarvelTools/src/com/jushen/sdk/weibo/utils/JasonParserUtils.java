@@ -33,9 +33,14 @@ public class JasonParserUtils extends Controller{
 		JSONObject friendTimeLineJsonObject = vJSONObject;
 		try {
 			retTimeLineUserInfo.text = friendTimeLineJsonObject.getString("text");
+			if(friendTimeLineJsonObject.has("thumbnail_pic"))
+				retTimeLineUserInfo.thumbnail_pic = friendTimeLineJsonObject.getString("thumbnail_pic");
+			if(friendTimeLineJsonObject.has("bmiddle_pic"))
+				retTimeLineUserInfo.bmiddle_pic = friendTimeLineJsonObject.getString("bmiddle_pic");
 			JSONObject userJSONObject = friendTimeLineJsonObject.getJSONObject("user");
 			retTimeLineUserInfo.profile_image_url = userJSONObject.getString("profile_image_url");
 			retTimeLineUserInfo.name = userJSONObject.getString("name");
+			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

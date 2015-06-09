@@ -1381,20 +1381,20 @@ containing a value of this type.
         public static final int abc_config_showMenuShortcutsWhenKeyboardPresent=0x7f050003;
     }
     public static final class color {
-        public static final int abc_background_cache_hint_selector_material_dark=0x7f060035;
-        public static final int abc_background_cache_hint_selector_material_light=0x7f060036;
+        public static final int abc_background_cache_hint_selector_material_dark=0x7f060036;
+        public static final int abc_background_cache_hint_selector_material_light=0x7f060037;
         public static final int abc_input_method_navigation_guard=0x7f060003;
-        public static final int abc_primary_text_disable_only_material_dark=0x7f060037;
-        public static final int abc_primary_text_disable_only_material_light=0x7f060038;
-        public static final int abc_primary_text_material_dark=0x7f060039;
-        public static final int abc_primary_text_material_light=0x7f06003a;
-        public static final int abc_search_url_text=0x7f06003b;
-        public static final int abc_search_url_text_holo=0x7f06003c;
+        public static final int abc_primary_text_disable_only_material_dark=0x7f060038;
+        public static final int abc_primary_text_disable_only_material_light=0x7f060039;
+        public static final int abc_primary_text_material_dark=0x7f06003a;
+        public static final int abc_primary_text_material_light=0x7f06003b;
+        public static final int abc_search_url_text=0x7f06003c;
+        public static final int abc_search_url_text_holo=0x7f06003d;
         public static final int abc_search_url_text_normal=0x7f060000;
         public static final int abc_search_url_text_pressed=0x7f060002;
         public static final int abc_search_url_text_selected=0x7f060001;
-        public static final int abc_secondary_text_material_dark=0x7f06003d;
-        public static final int abc_secondary_text_material_light=0x7f06003e;
+        public static final int abc_secondary_text_material_dark=0x7f06003e;
+        public static final int abc_secondary_text_material_light=0x7f06003f;
         public static final int accent_material_dark=0x7f06000f;
         public static final int accent_material_light=0x7f06000e;
         public static final int background_floating_material_dark=0x7f060006;
@@ -1428,6 +1428,7 @@ containing a value of this type.
         public static final int highlighted_text_material_light=0x7f060021;
         public static final int hint_foreground_material_dark=0x7f06001e;
         public static final int hint_foreground_material_light=0x7f06001f;
+        public static final int light_gray=0x7f060035;
         public static final int link_text_material_dark=0x7f060022;
         public static final int link_text_material_light=0x7f060023;
         public static final int material_blue_grey_800=0x7f06002e;
@@ -1455,7 +1456,7 @@ containing a value of this type.
         public static final int secondary_text_disabled_material_light=0x7f060029;
         public static final int switch_thumb_normal_material_dark=0x7f060012;
         public static final int switch_thumb_normal_material_light=0x7f060013;
-        public static final int text_color=0x7f06003f;
+        public static final int text_color=0x7f060040;
         public static final int white=0x7f060033;
     }
     public static final class dimen {
@@ -1780,14 +1781,14 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f090033;
         public static final int action_mode_bar_stub=0x7f090032;
         public static final int action_mode_close_button=0x7f090026;
-        public static final int action_settings=0x7f090059;
-        public static final int action_showLog=0x7f09005a;
+        public static final int action_settings=0x7f09005b;
+        public static final int action_showLog=0x7f09005c;
         public static final int activity_chooser_view_content=0x7f090027;
         public static final int always=0x7f090014;
         public static final int beginning=0x7f09001b;
-        public static final int button__about_me__login=0x7f09004c;
+        public static final int button__about_me__login=0x7f09004f;
         public static final int button__auth__login=0x7f090041;
-        public static final int button_log_slide=0x7f09004a;
+        public static final int button_log_slide=0x7f09004d;
         public static final int checkbox=0x7f09002f;
         public static final int collapseActionView=0x7f090015;
         public static final int decor_content_parent=0x7f090034;
@@ -1804,24 +1805,25 @@ containing a value of this type.
         public static final int homeAsUp=0x7f09000e;
         public static final int icon=0x7f09002c;
         public static final int id_content=0x7f090044;
-        public static final int id_tab_bottom_about_me=0x7f090057;
-        public static final int id_tab_bottom_community=0x7f090051;
-        public static final int id_tab_bottom_discovery=0x7f090055;
-        public static final int id_tab_bottom_marvel_tools=0x7f090053;
+        public static final int id_tab_bottom_about_me=0x7f090059;
+        public static final int id_tab_bottom_community=0x7f090053;
+        public static final int id_tab_bottom_discovery=0x7f090057;
+        public static final int id_tab_bottom_marvel_tools=0x7f090055;
         public static final int ifRoom=0x7f090016;
         public static final int image=0x7f090029;
-        public static final int imageView1=0x7f09004e;
-        public static final int imageView__title_bar__add=0x7f09004f;
-        public static final int imagebutton_tab_bottom_about_me=0x7f090058;
-        public static final int imagebutton_tab_bottom_community=0x7f090052;
-        public static final int imagebutton_tab_bottom_discovery=0x7f090056;
-        public static final int imagebutton_tab_bottom_marvel_tools=0x7f090054;
+        public static final int imageView__friends_timeline__retweet_textcontent=0x7f09004b;
+        public static final int imageView__friends_timeline__textcontent=0x7f090048;
+        public static final int imageView__title_bar__add=0x7f090051;
+        public static final int imagebutton_tab_bottom_about_me=0x7f09005a;
+        public static final int imagebutton_tab_bottom_community=0x7f090054;
+        public static final int imagebutton_tab_bottom_discovery=0x7f090058;
+        public static final int imagebutton_tab_bottom_marvel_tools=0x7f090056;
         public static final int imageview__friends_timeline__portrait=0x7f090045;
         public static final int listMode=0x7f09000a;
         public static final int list_item=0x7f09002b;
-        public static final int listview__community__friends_timeline=0x7f09004d;
-        public static final int ly_main_tab_bottom=0x7f090050;
-        public static final int ly_main_weixin=0x7f09004b;
+        public static final int listview__community__friends_timeline=0x7f090050;
+        public static final int ly_main_tab_bottom=0x7f090052;
+        public static final int ly_main_weixin=0x7f09004e;
         public static final int middle=0x7f09001d;
         public static final int never=0x7f090017;
         public static final int none=0x7f09000f;
@@ -1846,15 +1848,16 @@ containing a value of this type.
         public static final int split_action_bar=0x7f090004;
         public static final int submit_area=0x7f09003e;
         public static final int tabMode=0x7f09000c;
-        public static final int textView__friends_timeline__retweet_text=0x7f090048;
+        public static final int textView__friends_timeline__retweet_text=0x7f09004a;
         public static final int textView_friends_timeline__name=0x7f090046;
-        public static final int textView_log=0x7f090049;
+        public static final int textView_log=0x7f09004c;
         public static final int textview__auth__hint=0x7f090042;
         public static final int textview__friends_timeline__text=0x7f090047;
         public static final int title=0x7f09002d;
         public static final int top_action_bar=0x7f090023;
         public static final int up=0x7f090001;
         public static final int useLogo=0x7f090013;
+        public static final int view__friends_timeline__retweet_root=0x7f090049;
         public static final int withText=0x7f090018;
         public static final int wrap_content=0x7f090009;
     }
@@ -1916,19 +1919,21 @@ containing a value of this type.
         public static final int abc_search_view=0x7f03001c;
         public static final int abc_simple_dropdown_hint=0x7f03001d;
         public static final int activity_auth=0x7f03001e;
-        public static final int activity_main=0x7f03001f;
-        public static final int item_friends_timeline=0x7f030020;
-        public static final int log_layout=0x7f030021;
-        public static final int main_tab_about_me=0x7f030022;
-        public static final int main_tab_community=0x7f030023;
-        public static final int main_tab_discovery=0x7f030024;
-        public static final int main_tab_marvel_tools=0x7f030025;
-        public static final int support_simple_spinner_dropdown_item=0x7f030026;
-        public static final int title_bar=0x7f030027;
-        public static final int toplevel_bottom_bar=0x7f030028;
+        public static final int activity_detail_friend_timeline=0x7f03001f;
+        public static final int activity_main=0x7f030020;
+        public static final int item_friends_timeline=0x7f030021;
+        public static final int log_layout=0x7f030022;
+        public static final int main_tab_about_me=0x7f030023;
+        public static final int main_tab_community=0x7f030024;
+        public static final int main_tab_discovery=0x7f030025;
+        public static final int main_tab_marvel_tools=0x7f030026;
+        public static final int support_simple_spinner_dropdown_item=0x7f030027;
+        public static final int title_bar=0x7f030028;
+        public static final int toplevel_bottom_bar=0x7f030029;
     }
     public static final class menu {
-        public static final int main=0x7f0c0000;
+        public static final int detail_friend_timeline=0x7f0c0000;
+        public static final int main=0x7f0c0001;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -2004,6 +2009,7 @@ containing a value of this type.
         public static final int tip_ok=0x7f0a001f;
         public static final int tip_press_back_again_to_quit=0x7f0a0021;
         public static final int tip_warning=0x7f0a001d;
+        public static final int title_activity_detail_friend_timeline=0x7f0a0022;
         public static final int title_activity_sub=0x7f0a0016;
     }
     public static final class style {
@@ -2042,6 +2048,8 @@ containing a value of this type.
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
  Application theme. AppBaseTheme
+         <item name="android:windowActionBar">true</item> 
+         <item name="android:windowNoTitle">false</item> 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f0b011e;

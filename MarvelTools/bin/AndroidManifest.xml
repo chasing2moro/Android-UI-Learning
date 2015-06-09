@@ -19,9 +19,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.jushencompany.marveltools.MainActivity"
-            android:label="@string/app_name"
+            android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,9 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity android:name="com.jushen.sdk.weibo.WBAuthActivity" />
-        
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"
@@ -51,6 +49,11 @@
                 <action android:name="SDKRequestLogin" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name="com.jushencompany.marveltools.activity.DetailFriendTimelineActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+        </activity>
     </application>
 
 </manifest>

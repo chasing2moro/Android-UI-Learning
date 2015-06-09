@@ -27,9 +27,9 @@
 
     
         <!-- Application theme. AppBaseTheme-->
-    <style name="AppTheme" parent="AppBase.Base">
-        <item name="android:windowActionBar">true</item>
-        <item name="android:windowNoTitle">false</item>
+    <style name="AppTheme" parent="AppBaseTheme">
+<!--         <item name="android:windowActionBar">true</item> -->
+<!--         <item name="android:windowNoTitle">false</item> -->
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
