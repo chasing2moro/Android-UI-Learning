@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:descendantFocusability="blocksDescendants">
+    android:orientation="vertical" >
+<!--     android:descendantFocusability="blocksDescendants"> -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +29,6 @@
         android:id="@+id/textview__friends_timeline__text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoLink="all"
         android:text="正文" />
 
     <ImageView
@@ -50,9 +49,7 @@
             android:id="@+id/textView__friends_timeline__retweet_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:autoLink="all"
             android:background="@color/light_gray"
-            android:selectAllOnFocus="false"
             android:text="转发内容" />
 
         <ImageView

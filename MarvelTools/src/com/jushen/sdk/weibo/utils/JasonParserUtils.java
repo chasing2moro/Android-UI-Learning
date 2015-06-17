@@ -33,6 +33,7 @@ public class JasonParserUtils extends Controller{
 		JSONObject friendTimeLineJsonObject = vJSONObject;
 		try {
 			retTimeLineUserInfo.text = friendTimeLineJsonObject.getString("text");
+			retTimeLineUserInfo.weiboId = friendTimeLineJsonObject.getString("id");
 			if(friendTimeLineJsonObject.has("thumbnail_pic"))
 				retTimeLineUserInfo.thumbnail_pic = friendTimeLineJsonObject.getString("thumbnail_pic");
 			if(friendTimeLineJsonObject.has("bmiddle_pic"))

@@ -28,7 +28,7 @@ import com.jushen.sdk.weibo.Constants;
 import com.jushen.sdk.weibo.WBAuthActivity;
 import com.jushen.sdk.weibo.openapi.TimeLineAPI;
 import com.jushen.sdk.weibo.utils.JasonParserUtils;
-import com.jushen.utils.CommonUtils;
+import com.jushen.utils.event.CommonUtils;
 import com.jushen.utils.log.LoggerUtils;
 import com.jushencompany.marveltools.R;
 import com.jushencompany.marveltools.activity.DetailFriendTimelineActivity;
@@ -61,14 +61,14 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 	public void onRegistEvent() {
 		// TODO Auto-generated method stub
 		super.onRegistEvent();
-		registEvent(EventName.AsyncImageLoaderPlus_DownloadProfileImageRep, "onAsyncImageLoaderPlus_DownloadProfileImageFinish");
+		registEvent(EventName.AsyncImageLoaderPlus_DownloadImageRep, "onAsyncImageLoaderPlus_DownloadProfileImageFinish");
 	}
 
 	@Override
 	public void onUnRegistEvent() {
 		// TODO Auto-generated method stub
 		super.onUnRegistEvent();
-		unRegistEvent(EventName.AsyncImageLoaderPlus_DownloadProfileImageRep, "onAsyncImageLoaderPlus_DownloadProfileImageFinish");
+		unRegistEvent(EventName.AsyncImageLoaderPlus_DownloadImageRep, "onAsyncImageLoaderPlus_DownloadProfileImageFinish");
 	}
 	
 	@Override
@@ -134,6 +134,7 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 				LoggerUtils.i("list view clicked pos:" + position);
 				Intent aIntent = new Intent();
 				aIntent.setClass(getActivity(), DetailFriendTimelineActivity.class);
+				aIntent.putExtra("index", position);
 				startActivity(aIntent);
 				sendEvent(EventName.CommonUtils_ActivitySlideIn, EventArg.Create().setUserInfo(getActivity()));
 			}
@@ -142,6 +143,7 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 
 	}
 	
+	Object _showRotateObject;
 	void requestTimeLine() {
 		LoggerUtils.i("requestTimeLine");
 		
@@ -174,6 +176,8 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 							.setUserInfo(getActivity())
 							.putUserInfo("listener", this));
 		}else{
+			_showRotateObject = sendEvent(EventName.ViewUtils_Rotate_Hint_Show, EventArg.Create().setUserInfo(getActivity()));
+			
 		 // 获取用户信息接口
 		 _TimeLineAPI = new TimeLineAPI(getActivity(), 
 				 Constants.APP_KEY,
@@ -184,6 +188,7 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 
 	@Override
 	public void onComplete(String arg0) {
+		
 		// TODO Auto-generated method stub
 		LoggerUtils.i("TimeLineAPI Request result:" + arg0);
 		 JSONObject jsonObject = null;
@@ -219,6 +224,8 @@ public class MainArraySubViewCommunity extends MainArrayViewBase implements Requ
 		_listViewFriendsTimeline.setAdapter(_timeLineAdapter);
 		
 		_requested = true;
+		
+		sendEvent(EventName.ViewUtils_Rotate_Hint_Hide, EventArg.Create().setUserInfo(_showRotateObject));
 	}
 
 	@Override

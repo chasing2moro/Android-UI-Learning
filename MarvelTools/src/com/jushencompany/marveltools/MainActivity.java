@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.jushencompany.marveltools.R;
+import com.jushencompany.marveltools.activity.DetailFriendTimelineActivity;
 import com.jushencompany.marveltools.arrayview.main.*;
 import com.jushencompany.marveltools.arrayview.maintab.MainArrayViewTabBase;
 import com.jushencompany.marveltools.arrayview.maintab.MainArrayViewTabManager;
@@ -223,14 +224,24 @@ public class MainActivity extends Activity implements OnClickListener , Serializ
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 
+		
 		int id = item.getItemId();
 		switch (id) {
-		case R.id.action_settings:
+		case R.id.textView__detail_friend_timeline__name:
 			
 			break;
 		case R.id.action_showLog:
 			sendEvent(EventName.LogController_Show, null);
 			break;
+		case R.id.action_test:
+			testRotate();
+			break;
+//			Intent aIntent = new Intent();
+//			aIntent.setClass(this, DetailFriendTimelineActivity.class);
+//			aIntent.putExtra("index", 0);
+//			startActivity(aIntent);
+//			sendEvent(EventName.CommonUtils_ActivitySlideIn, EventArg.Create().setUserInfo(this));
+//			break;
 		default:
 			break;
 		}
@@ -320,4 +331,56 @@ public class MainActivity extends Activity implements OnClickListener , Serializ
   
         return super.onKeyDown(keyCode, event);  
     }  
+    
+    void testRotate(){
+             // TODO Auto-generated method stub
+            
+             //创建ProgressDialog对象
+    	android.app.ProgressDialog m_pDialog = new android.app.ProgressDialog(getApplicationContext());
+
+             // 设置进度条风格，风格为圆形，旋转的
+             m_pDialog.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
+
+             // 设置ProgressDialog 标题
+            // m_pDialog.setTitle("提示");
+            
+             // 设置ProgressDialog 提示信息
+             m_pDialog.setMessage("Loading...");
+
+             // 设置ProgressDialog 标题图标
+            // m_pDialog.setIcon(R.drawable.icoin_add);
+
+             // 设置ProgressDialog 的进度条是否不明确
+             m_pDialog.setIndeterminate(true);
+            
+             // 设置ProgressDialog 是否可以按退回按键取消
+             m_pDialog.setCancelable(true);
+
+             // 让ProgressDialog显示
+             m_pDialog.show();
+             
+             m_pDialog = new android.app.ProgressDialog(this);
+
+             // 设置进度条风格，风格为圆形，旋转的
+             m_pDialog.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
+
+             // 设置ProgressDialog 标题
+            // m_pDialog.setTitle("提示");
+            
+             // 设置ProgressDialog 提示信息
+             m_pDialog.setMessage("Loading...");
+
+             // 设置ProgressDialog 标题图标
+            // m_pDialog.setIcon(R.drawable.icoin_add);
+
+             // 设置ProgressDialog 的进度条是否不明确
+             m_pDialog.setIndeterminate(true);
+            
+             // 设置ProgressDialog 是否可以按退回按键取消
+             m_pDialog.setCancelable(true);
+
+             // 让ProgressDialog显示
+             m_pDialog.show();
+         }
+    
 }

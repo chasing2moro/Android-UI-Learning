@@ -1,8 +1,9 @@
 package com.jushencompany.marveltools;
 
 import com.jushen.sdk.weibo.utils.JasonParserUtils;
-import com.jushen.utils.AsyncImageLoaderPlus;
-import com.jushen.utils.CommonUtils;
+import com.jushen.utils.event.AsyncImageLoaderPlus;
+import com.jushen.utils.event.CommonUtils;
+import com.jushen.utils.event.ViewUtils;
 import com.jushen.utils.log.LogController;
 import com.jushen.utils.log.LoggerUtils;
 
@@ -22,6 +23,7 @@ public class MainEntrance {
 	private AsyncImageLoaderPlus _asyncImageLoaderPlus;
 	private CommonUtils _commonUtils;
 	private JasonParserUtils _JasonParserUtils;
+	private ViewUtils _viewUtils;
 	
 	private boolean _isInit = false;
 	public void Main(Context vContext) {
@@ -38,6 +40,7 @@ public class MainEntrance {
 		_asyncImageLoaderPlus = new AsyncImageLoaderPlus(_context);
 		_commonUtils = new CommonUtils();
 		_JasonParserUtils = new JasonParserUtils();
+		_viewUtils = new ViewUtils();
 		
 		registEvent();
 	}
@@ -48,6 +51,7 @@ public class MainEntrance {
 		_asyncImageLoaderPlus.fireRegistEvent();
 		_commonUtils.fireRegistEvent();
 		_JasonParserUtils.fireRegistEvent();
+		_viewUtils.fireRegistEvent();
 	}
 	
 	public void unRegistEvent() {

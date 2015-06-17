@@ -4,8 +4,10 @@ import android.text.TextUtils;
 
 
 public class TimeLineUserInfo{
+	public String weiboId;
 	public String text;
 	public String name;
+	
 	
 	public String profile_image_url;
 	
