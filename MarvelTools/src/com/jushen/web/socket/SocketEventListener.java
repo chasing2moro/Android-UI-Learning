@@ -2,23 +2,23 @@ package com.jushen.web.socket;
 
 public interface SocketEventListener {
     /**
-     * SocketÕıÔÚ½ÓÊÕÊı¾İ
+     * Socketæ­£åœ¨æ¥æ”¶æ•°æ®
      * */
     public void OnStreamRecive();
     /**
-     * Socket½ÓÊÕÊı¾İÍê³É
+     * Socketæ¥æ”¶æ•°æ®å®Œæˆ
      * */
     public void OnStreamReciveFinish();
     /**
-     * SocketÓĞĞÂµÄÏûÏ¢·µ»Ø
+     * Socketæœ‰æ–°çš„æ¶ˆæ¯è¿”å›
      * */
     public void OnStreamComing(byte[] aStreamData);
     /**
-     * Socket³öÏÖÒì³£
+     * Socketå‡ºç°å¼‚å¸¸
      * */
     public void OnSocketPause();
     /**
-     * SocketÒÑĞŞ¸´,¿ÉÓÃ
+     * Socketå·²ä¿®å¤,å¯ç”¨
      * */
     public void OnSocketAvaliable();
 }

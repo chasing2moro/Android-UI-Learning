@@ -16,7 +16,7 @@ import android.view.View.OnTouchListener;
 import com.jushen.framework.event.Controller;
 import com.jushen.widget.LogLayout;
 
-public class LogIncubateView extends Controller implements View.OnClickListener{
+public abstract class LogIncubateView extends Controller implements View.OnClickListener{
 	  private WindowManager mWindowManager;
 	    private WindowManager.LayoutParams mLayoutParams;
 	    protected LogLayout mLogLayout;
@@ -50,6 +50,15 @@ public class LogIncubateView extends Controller implements View.OnClickListener{
 	     */
 	    void createDesktopLayout() {
 	        mLogLayout = new LogLayout(_Context);
+	        
+		mLogLayout.m_ButtonConsole.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						OnConsoleButtonClicked(mLogLayout.m_EditTextConsole.getText().toString());
+					}
+				});
+
 	        mLogLayout.m_SlideButton.setText("Clear");
 	        mLogLayout.m_SlideButton.setOnClickListener(this);
 	        mLogLayout.setOnTouchListener(new OnTouchListener() {
@@ -190,4 +199,6 @@ public class LogIncubateView extends Controller implements View.OnClickListener{
 		protected void ClearButtnClicked(){
 			
 		}
+		
+		public abstract void OnConsoleButtonClicked(String vConsoleString);
 }

@@ -16,7 +16,7 @@ import android.view.View;
 //LoggerUtils.setListener(_LogController);
 //_LogController.showLog();
 
-public class LogController extends LogIncubateView implements LogListener{
+public class LogController extends LogConsole implements LogListener{
 public static String S_NewLiner = "<br/>";
 	public LogController() {
 		_calendar = Calendar.getInstance();

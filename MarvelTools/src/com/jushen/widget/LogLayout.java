@@ -8,12 +8,16 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class LogLayout extends LinearLayout {
 	public TextView m_TextView;
 	public Button m_SlideButton;
+	
+	public EditText m_EditTextConsole;
+	public Button m_ButtonConsole;
 
     public LogLayout(Context context) {
         super(context);
@@ -33,6 +37,8 @@ public class LogLayout extends LinearLayout {
         
         m_SlideButton = (Button)view.findViewById(R.id.button_log_slide);
 
+        m_EditTextConsole = (EditText)view.findViewById(R.id.editText_log_console);
+        m_ButtonConsole = (Button)view.findViewById(R.id.button_log_console);
         this.addView(view);
     }
 }

@@ -1,6 +1,7 @@
 package com.jushen.web.socket;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.*;
 import java.nio.*;
 import java.nio.channels.*;
@@ -8,12 +9,22 @@ import java.nio.channels.*;
 import org.apache.http.util.ByteArrayBuffer;
 
 import android.R.bool;
+import android.R.xml;
 import android.util.Log;
 
 import com.jushen.utils.log.LoggerUtils;
 //http://www.2cto.com/kf/201405/301570.html
 public class SocketClient {
+	private static SocketClient _instance;
+	public static SocketClient singleton() {
+		if(_instance == null){
+			_instance = new SocketClient();
+		}
+		return _instance;
+	}
 	Selector mSelector = null;
+	
+	//store byte stream from socket
 	ByteBuffer sendBuffer = null;
 	SocketChannel client = null;
 	InetSocketAddress isa = null;
@@ -27,7 +38,21 @@ public class SocketClient {
 		sendBuffer = ByteBuffer.allocate(1024);
 	}
 
+	public void ConnectAsync(String site, int port) {
+		final String aSite = site;
+		final int aPort = port;
+		Thread connectThread = new Thread(){
+			@Override
+			public void run() {
+				Connect(aSite, aPort);
+			}
+		};
+		
+		connectThread.start();
+	}
 	public boolean Connect(String site, int port) {
+		site = "192.168.16.40";
+		port = 6101;
 		if (mSocketEventListener != null) {
 			mSocketEventListener.OnSocketPause();
 		}
@@ -37,11 +62,15 @@ public class SocketClient {
 			mSelector = Selector.open();
 			client = SocketChannel.open();
 			client.socket().setSoTimeout(5000);
+			LoggerUtils.i("Connect:" + site + " " + port);
 			isa = new InetSocketAddress(site, port);
-			boolean isconnect = client.connect(isa);
-			// ½«¿Í»§¶ËÉè¶¨ÎªÒì²½
+			
+			//work as Async
 			client.configureBlocking(false);
-			// ÔÚÂÖÑ¶¶ÔÏóÖÐ×¢²á´Ë¿Í»§¶ËµÄ¶ÁÈ¡ÊÂ¼þ(¾ÍÊÇµ±·þÎñÆ÷Ïò´Ë¿Í»§¶Ë·¢ËÍÊý¾ÝµÄÊ±ºò)
+			
+			//connect
+			boolean isconnect = client.connect(isa);
+			
 			client.register(mSelector, SelectionKey.OP_READ);
 			
 			long waittimes = 0;
@@ -52,23 +81,25 @@ public class SocketClient {
 					if (waittimes < 100) {
 						waittimes++;
 					} else {
-						LoggerUtils.i("µÈ´ý·Ç×èÈûÁ¬½Ó½¨Á¢Ê§°Ü");
+						LoggerUtils.i("Connect time out :" + (50 * 100) + " ms");
 						break;
 					}
 				}
 
 				if(client.finishConnect()){
-					LoggerUtils.i("µÈ´ý·Ç×èÈûÁ¬½Ó½¨Á¢³É¹¦");
+					LoggerUtils.i("connection is finished later");
+					ret = true;
 				}
 			}else{
-				LoggerUtils.i("·Ç×èÈûÁ¬½Ó¾¹È»ÂíÉÏ½¨Á¢³É¹¦ÁË¡£(¡Ñ©n¡Ñ)b");
+				LoggerUtils.i("connection is finished immediately");
+				ret = true;
 			}
 			
 
 			Thread.sleep(500);
 			// haverepaired();
-			startListener();
-			ret = true;
+			//startListener();
+			
 		} catch (Exception e) {
 			LoggerUtils.e(" - Connect error", e != null ? e.toString() : "null");
 			try {
@@ -76,11 +107,15 @@ public class SocketClient {
 			} catch (Exception e1) {
 				LoggerUtils.e(" - Connect error", e1 != null ? e1.toString() : "null");
 			}
-			ret = false;
 		}
 		return ret;
 	}
 
+	public boolean  Send1stSocketMsg(byte[] aMessage) throws IOException{
+		startListener();
+		return SendSocketMsg(aMessage);
+	}
+	
 	public boolean SendSocketMsg(byte[] aMessage) throws IOException
     {
             boolean ret = false;
@@ -97,7 +132,7 @@ public class SocketClient {
             }
             catch (Exception e)
             {
-            		LoggerUtils.e("·¢ËÍÊý¾ÝÊ§°Ü:" + e.toString());
+            		LoggerUtils.e("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½:" + e.toString());
 
                     if (mSocketEventListener != null)
                     {
@@ -118,27 +153,25 @@ public class SocketClient {
 				public void run() {
 					while (!this.isInterrupted() && mRunRead) {
 						try {
-							// Èç¹û¿Í»§¶ËÁ¬½ÓÃ»ÓÐ´ò¿ª¾ÍÍË³öÑ­»·
+							LoggerUtils.iConsleOnly("check client if opend");
 							if (!client.isOpen())
 								break;
 
-							// ´Ë·½·¨Îª²éÑ¯ÊÇ·ñÓÐÊÂ¼þ·¢ÉúÈç¹ûÃ»ÓÐ¾Í×èÈû,ÓÐµÄ»°·µ»ØÊÂ¼þÊýÁ¿
 							int eventcount = mSelector.select();
-
-							// Èç¹ûÃ»ÓÐÊÂ¼þ·µ»ØÑ­»·
+	
 							if (eventcount > 0) {
 								starttime = System.currentTimeMillis();
-								LoggerUtils.iConsleOnly("eventcount > 0");
-								// ±éÀýËùÓÐµÄÊÂ¼þ
+								LoggerUtils.iConsleOnly("eventcount :" + eventcount);
+
 								for (SelectionKey key : mSelector.selectedKeys()) {
-									
-									// É¾³ý±¾´ÎÊÂ¼þ
+									LoggerUtils.iConsleOnly("eventType :" + key.interestOps());
 									mSelector.selectedKeys().remove(key);
-									// Èç¹û±¾ÊÂ¼þµÄÀàÐÍÎªreadÊ±,±íÊ¾·þÎñÆ÷Ïò±¾¿Í»§¶Ë·¢ËÍÁËÊý¾Ý
+			
 									if (key.isValid() && key.isReadable()) {
 										if (mSocketEventListener != null) {
 											mSocketEventListener.OnStreamRecive();
 										}
+										//key.channel() is the same to client
 										boolean readresult = ReceiveDataBuffer((SocketChannel) key.channel());
 										
 										if (mSocketEventListener != null) {
@@ -149,7 +182,8 @@ public class SocketClient {
 											key.interestOps(SelectionKey.OP_READ);
 											sleep(200);
 										} else {
-											throw new Exception();
+											//throw new Exception();
+											//this.interrupt();
 										}
 									}
 									key = null;
@@ -176,18 +210,29 @@ public class SocketClient {
 	}
 
 	private boolean ReceiveDataBuffer(SocketChannel aSocketChannel) {
-		// n ÓÐÊý¾ÝµÄÊ±ºò·µ»Ø¶ÁÈ¡µ½µÄ×Ö½ÚÊý¡£
-		// 0 Ã»ÓÐÊý¾Ý²¢ÇÒÃ»ÓÐ´ïµ½Á÷µÄÄ©¶ËÊ±·µ»Ø0¡£
-		// -1 µ±´ïµ½Á÷Ä©¶ËµÄÊ±ºò·µ»Ø-1¡£
+		// n ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½Ê±ï¿½ò·µ»Ø¶ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// 0 Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½Ã»ï¿½Ð´ïµ½ï¿½ï¿½ï¿½ï¿½Ä©ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½
+		// -1 ï¿½ï¿½ï¿½ïµ½ï¿½ï¿½Ä©ï¿½Ëµï¿½Ê±ï¿½ò·µ»ï¿½-1ï¿½ï¿½
 		boolean ret = false;
 
 		ByteArrayBuffer bab = new ByteArrayBuffer(8 * 1024);
 		while (true) {
 			try {
 				ByteBuffer readBuffer = ByteBuffer.allocate(1024 * 1);
+				
+				
 				readBuffer.clear();
+				
+//				n æœ‰æ•°æ®çš„æ—¶å€™è¿”å›žè¯»å–åˆ°çš„å­—èŠ‚æ•°ã€‚
+//				0 æ²¡æœ‰æ•°æ®å¹¶ä¸”æ²¡æœ‰è¾¾åˆ°æµçš„æœ«ç«¯æ—¶è¿”å›ž0ã€‚
+//				-1 å½“è¾¾åˆ°æµæœ«ç«¯çš„æ—¶å€™è¿”å›ž-1ã€‚
 				int readsize = aSocketChannel.read(readBuffer);
-
+				
+				//i.è¯»å–bufferçš„chanel  
+//				InputStream is = aSocketChannel.socket().getInputStream();  
+//				ReadableByteChannel readCh = Channels.newChannel(is);  
+//				int readsize = readCh.read(readBuffer);
+				
 				if (readsize > 0) {
 					LoggerUtils.i("readsize:" + readsize);
 					byte[] readbytes = readBuffer.array();
@@ -223,7 +268,7 @@ public class SocketClient {
 							int blockdatasize = 5 + blocksize + 4;
 
 							if (blockdatasize <= buffersize) {
-								LoggerUtils.i("¿éÊý¾Ý´óÐ¡£º" + blockdatasize);
+								LoggerUtils.i("ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½Ð¡ï¿½ï¿½" + blockdatasize);
 								byte[] blockdata = new byte[blockdatasize];
 								System.arraycopy(readdata, readdataoffset,
 										blockdata, 0, blockdatasize);
@@ -231,14 +276,14 @@ public class SocketClient {
 								long starttime = System.currentTimeMillis();
 								ReceiveData(blockdata);
 								long endtime = System.currentTimeMillis();
-								LoggerUtils.i("½âÎöÊý¾ÝÓÃÊ±£º" + (endtime - starttime)
+								LoggerUtils.i("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½" + (endtime - starttime)
 										+ "ms");
 								readdataoffset += blockdatasize;
 								blockdata = null;
-							} else if (blockdatasize < 10240) {// Ð¡ÓÚ10k£¬ÔòÊôÓÚÕý³£°ü
-								LoggerUtils.i("¿éÊý¾Ý´óÐ¡:" + blockdatasize
-										+ ",Ð¡ÓÚ10k£¬ËµÃ÷Êý¾Ý²»ÍêÕû£¬¼ÌÐø»ñÈ¡¡£");
-								// ½«Î´½âÎöÊý¾Ý´æµ½ÁÙÊ±buffer
+							} else if (blockdatasize < 10240) {// Ð¡ï¿½ï¿½10kï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+								LoggerUtils.i("ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½Ð¡:" + blockdatasize
+										+ ",Ð¡ï¿½ï¿½10kï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½");
+								// ï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´æµ½ï¿½ï¿½Ê±buffer
 								int IncompleteSize = buffersize
 										- readdataoffset;
 								if (IncompleteSize > 0) {
@@ -251,8 +296,8 @@ public class SocketClient {
 									parsedata = false;
 									Incompletedata = null;
 								}
-							} else {// Òì³£°ü
-								LoggerUtils.i("¿éÊý¾Ý´íÎó´óÐ¡£º" + blockdatasize);
+							} else {// ï¿½ì³£ï¿½ï¿½
+								LoggerUtils.i("ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½" + blockdatasize);
 								LoggerUtils.i("blockdatasize error:"
 										+ blockdatasize);
 								ret = true;
@@ -270,6 +315,7 @@ public class SocketClient {
 					ret = false;
 					break;
 				} else {
+					LoggerUtils.i("read unhandle , size:" + readsize);
 					ret = true;
 					break;
 				}
@@ -321,12 +367,12 @@ public class SocketClient {
 						datalengthbyte = null;
 
 						if (datalength > 4) {
-							// compressed bit ÔÝÊ±²»Ñ¹Ëõ
+							// compressed bit ï¿½ï¿½Ê±ï¿½ï¿½Ñ¹ï¿½ï¿½
 							byte compressed = aDataBlock[offset];
 							offset += 1;
 
-							if (compressed == 1) {// ½âÑ¹Ëõ
-													// Ìø¹ýÍ·4¸ö×Ö½Ú£¬´Ë´¦ÓÃÓÚ½âÑ¹ËõºóµÄÊý¾Ý´óÐ¡£¬ÔÝÊ±²»ÐèÒª
+							if (compressed == 1) {// ï¿½ï¿½Ñ¹ï¿½ï¿½
+													// ï¿½ï¿½ï¿½ï¿½Í·4ï¿½ï¿½ï¿½Ö½Ú£ï¿½ï¿½Ë´ï¿½ï¿½ï¿½ï¿½Ú½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Òª
 								offset += 4;
 								int contentlength = datalength - 1 - 4;
 								byte[] datacontentbyte = new byte[contentlength];
@@ -341,7 +387,7 @@ public class SocketClient {
 								long starttime = System.currentTimeMillis();
 								byte[] decompressdatacontentbyte = null;// CommonClass.decompress(compressdata);
 								long endtime = System.currentTimeMillis();
-								LoggerUtils.i("½âÑ¹ËõÊý¾ÝÓÃÊ±£º"
+								LoggerUtils.i("ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½"
 										+ (endtime - starttime) + "ms");
 								int decompressdatacontentbytelength = decompressdatacontentbyte.length;
 								compressdata = null;
@@ -357,7 +403,7 @@ public class SocketClient {
 									datacontentbyte = null;
 									decompressdatacontentbyte = null;
 								}
-							} else {// Êý¾ÝÎ´Ñ¹Ëõ
+							} else {// ï¿½ï¿½ï¿½ï¿½Î´Ñ¹ï¿½ï¿½
 								int contentlength = datalength - 1;
 								byte[] datacontentbyte = new byte[contentlength];
 								System.arraycopy(aDataBlock, offset,
