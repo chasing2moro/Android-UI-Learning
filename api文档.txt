@@ -1,5 +1,0 @@
-github:
-https://github.com/sinaweibosdk/weibo_android_sdk
-
-doc:
-http://sinaweibosdk.github.io/weibo_android_sdk/doc/
