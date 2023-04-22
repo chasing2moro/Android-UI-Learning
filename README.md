@@ -12,7 +12,7 @@ https://github.com/Kr328/ClashForAndroid/releases/download/v2.5.12/cfa-2.5.12-fo
 ### 5. 点击“URL”导入
 ![img](./3.jpg)
 ### 6. 如下图做①②③④操作
-第②步用到的URL为[^1] https://sub1.smallstrawberry.com/api/v1/client/subscribe?token=55e0367e3ae8d7839d420759a0db3b74
+第②步用到的URL为[^1] https://sub1.small3strawberry.com/a3pi/v1/clien3t/subscribe?token=123
 ![img](./4.jpg)
 ### 7. 如下图做①②操作
 ![img](./5.jpg)
